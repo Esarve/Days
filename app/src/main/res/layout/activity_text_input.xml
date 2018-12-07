@@ -16,6 +16,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/textField"
             android:hint="@string/enter_your_text_here"
             android:inputType="textCapSentences|textMultiLine"
             android:scrollHorizontally="false"

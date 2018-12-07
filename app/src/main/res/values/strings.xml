@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Days</string>
-    <string name="enter_your_text_here">Enter your text here…</string>
+    <string name="enter_your_text_here">Tell me about your day…</string>
     <string name="cal_icon">cal_icon</string>
 </resources>

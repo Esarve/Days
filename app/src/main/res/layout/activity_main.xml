@@ -28,6 +28,7 @@
         android:layout_above="@+id/btm_nav"
         android:src="@drawable/ic_add_black_24dp"
         android:layout_margin="20dp"
-        android:onClick="openEditor"/>
+        android:onClick="openEditor"
+        app:rippleColor="?android:attr/colorControlHighlight"/>
 
 </RelativeLayout>

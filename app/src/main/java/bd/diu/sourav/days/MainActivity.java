@@ -37,12 +37,15 @@ public class MainActivity extends AppCompatActivity {
                     switch (menuItem.getItemId()){
                         case R.id.nav_home:
                             selectFrag = new DefaultFragment();
+                            setTitle(R.string.app_name);
                             break;
                         case R.id.nav_stats:
                             selectFrag = new StatsFragment();
+                            setTitle("Stats");
                             break;
                         case R.id.nav_about:
                             selectFrag = new AboutFragment();
+                            setTitle("About");
                             break;
                     }
 

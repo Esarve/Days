@@ -4,25 +4,25 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     Intent intent;
-    Sqlite database = new Sqlite(this);
+   /* Sqlite database = new Sqlite(this);
     private List<Days> days = new ArrayList<>();
     RecyclerView recyclerView;
-    DaysAdapter daysAdapter;
+    DaysAdapter daysAdapter;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
         bottomNav.setOnNavigationItemSelectedListener(navlistner);
 
-        database.addData("Jan 1","Today was a good day","10:10 AM");
+        //database.addData("Jan 1","Today was a good day","10:10 AM");
         /*recyclerView = findViewById(R.id.recycler_view);
 
         daysAdapter = new DaysAdapter(days);
@@ -45,6 +45,17 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(daysAdapter);
         daysAdapter.update(database.getData());
         daysAdapter.notifyDataSetChanged();*/
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadDefaultFragment();
+        CoordinatorLayout coordinatorLayout = findViewById(R.id.fragment_cont);
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, "Data Loaded Successfully", Snackbar.LENGTH_LONG);
+
+        snackbar.show();
     }
 
     @Override

@@ -32,6 +32,5 @@ public class DefaultFragment extends Fragment {
         daysAdapter.update(sqlite.getData());
         daysAdapter.notifyDataSetChanged();
         return view;
-
     }
 }

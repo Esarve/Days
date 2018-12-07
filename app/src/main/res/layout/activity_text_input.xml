@@ -25,28 +25,43 @@
             android:lines="10"/>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/NavColor"
-        android:orientation="horizontal"
         android:layout_weight="0.1">
 
         <ImageView
+            android:id="@+id/iconCal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/cal_icon"
-            app:srcCompat="@drawable/ic_cal_black_24dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="start|center"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="11dp"
+            android:contentDescription="@string/cal_icon"
+            app:srcCompat="@drawable/ic_cal_black_24dp" />
 
         <TextView
+            android:id="@+id/date_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/date_view"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="start|center"
-            android:layout_marginStart="10dp"
-            android:text="1 Jan 2018"/>
-    </LinearLayout>
+            android:layout_marginStart="43dp"
+            android:text="1 Jan 2018" />
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:text="@string/save"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="11dp"
+            android:layout_marginStart="200dp"
+            android:textColor="@color/default_dark"
+            android:background="@color/colorPrimary"
+            android:onClick="saveData"/>
+    </RelativeLayout>
 
 </LinearLayout>

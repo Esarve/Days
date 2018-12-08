@@ -1,34 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:weightSum="1"
     tools:context=".MainActivity">
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/fragment_cont"
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btm_nav"/>
+        android:layout_weight="0.1"
+        android:orientation="vertical">
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/btm_nav"
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/fragment_cont"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btm_nav" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="20dp"
+            android:onClick="openEditor"
+            android:src="@drawable/ic_add_black_24dp"
+            app:rippleColor="?android:attr/colorControlHighlight" />
+    </android.support.design.widget.CoordinatorLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_navigation"
-        android:background="?android:attr/windowBackground"/>
+        android:layout_height="match_parent"
+        android:layout_weight="0.9">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/btm_nav"
-        android:src="@drawable/ic_add_black_24dp"
-        android:layout_margin="20dp"
-        android:onClick="openEditor"
-        app:rippleColor="?android:attr/colorControlHighlight"/>
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/btm_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="?android:attr/windowBackground"
+            app:menu="@menu/bottom_navigation" />
+    </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     private List<Days> days = new ArrayList<>();
     RecyclerView recyclerView;
     DaysAdapter daysAdapter;*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadDefaultFragment();
-        CoordinatorLayout coordinatorLayout = findViewById(R.id.fragment_cont);
+        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
         Snackbar snackbar = Snackbar
                 .make(coordinatorLayout, "Data Loaded Successfully", Snackbar.LENGTH_LONG);
 

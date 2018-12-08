@@ -22,7 +22,7 @@ public class Sqlite extends SQLiteOpenHelper {
     private static final String COL_DATE = "date";
     private static final String COL_TIME = "time";
     private static final String COL_TEXT = "text";
-
+    private static final String COL_ID = "id";
     // Constructor. u already know that.
 
     public Sqlite(Context context){
@@ -43,6 +43,7 @@ public class Sqlite extends SQLiteOpenHelper {
 
     private void initDB(SQLiteDatabase db){
         String createTable = "CREATE TABLE IF NOT EXISTS " +  TABLE + "(" +
+                COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
                 COL_DATE + " VARCHAR,"+
                 COL_TEXT + " TEXT,"+
                 COL_TIME + " VARCHAR"+
@@ -78,10 +79,11 @@ public class Sqlite extends SQLiteOpenHelper {
         int dateIndex = cursor.getColumnIndex(COL_DATE);
         int textIndex = cursor.getColumnIndex(COL_TEXT);
         int timeIndex = cursor.getColumnIndex(COL_TIME);
+        int idIndex = cursor.getColumnIndex(COL_ID);
 
         if (cursor.moveToFirst()){
             do {
-                Days newContacts = new Days(cursor.getString(dateIndex),cursor.getString(textIndex),cursor.getString(timeIndex));
+                Days newContacts = new Days(cursor.getString(dateIndex),cursor.getString(textIndex),cursor.getString(timeIndex),cursor.getInt(idIndex));
                 resultlist.add(newContacts);
             }while (cursor.moveToNext());
             setLog("Finised may be?");
@@ -92,6 +94,13 @@ public class Sqlite extends SQLiteOpenHelper {
         setLog("Result delivered");
         return resultlist;
     }
+
+    public void remove(int pos){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE, COL_ID + "=" + Integer.toString(pos),null);
+        db.close();
+    }
+
 
     // For logging and shits
 

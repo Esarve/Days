@@ -49,7 +49,7 @@ public class TextInput extends AppCompatActivity {
     }
 
     private String getDate(){
-        dateFormat = new SimpleDateFormat("MMM d");
+        dateFormat = new SimpleDateFormat("MMMM d");
         return dateFormat.format(Calendar.getInstance().getTime());
     }
 

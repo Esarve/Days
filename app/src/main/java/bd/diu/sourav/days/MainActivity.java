@@ -1,5 +1,6 @@
 package bd.diu.sourav.days;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -107,5 +108,10 @@ public class MainActivity extends AppCompatActivity {
     public void openEditor(View view){
         intent = new Intent(this, TextInput.class);
         this.startActivity(intent);
+    }
+
+    public void removeFromDB(Context context,int pos){
+        Sqlite database = new Sqlite(context);
+        database.remove(pos);
     }
 }

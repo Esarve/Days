@@ -7,4 +7,5 @@
     <color name="year">#999999</color>
     <color name="title">#222222</color>
     <color name="default_dark">#111111</color>
+    <color name="ItemBG">#F5F5F5</color>
 </resources>

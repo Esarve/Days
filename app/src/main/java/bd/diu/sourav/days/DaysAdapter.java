@@ -1,10 +1,13 @@
 package bd.diu.sourav.days;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -15,17 +18,20 @@ import java.util.List;
  */
 
 public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.MyViewHolder>{
-
+    Context context;
     private List<Days> dayList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView date, text, time;
+        public RelativeLayout viewBackground, viewForeground;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             date = itemView.findViewById(R.id.date);
             text = itemView.findViewById(R.id.text);
             time = itemView.findViewById(R.id.time);
+            viewBackground = itemView.findViewById(R.id.view_background);
+            viewForeground = itemView.findViewById(R.id.view_foreground);
         }
     }
 
@@ -56,6 +62,20 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.MyViewHolder>{
     // This one just updates the data
     // I HAVE NO IDEA HOW IT DOES THIS BUT IT WORKS  ¯\_(ツ)_/¯
 
+    public void removeItem(int position) {
+//        int str = dayList.get(position).getId();
+//        Log.i("Remvoed", Integer.toString(str));
+        this.dayList.remove(position);
+
+        notifyItemRemoved(position);
+    }
+
+
+    public void restoreItem(Days item, int position) {
+        this.dayList.add(position, item);
+        notifyItemInserted(position);
+
+    }
     public void update(List<Days> dayList){
         this.dayList.clear();
         this.dayList.addAll(dayList);

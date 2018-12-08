@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -94,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void changeNavBarColor(){
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.NavColor));
+        if (android.os.Build.VERSION.SDK_INT >= 27) {
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this,R.color.NavColor));
         }
     }
 

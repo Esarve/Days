@@ -20,6 +20,12 @@ public class TextInput extends AppCompatActivity {
     DateFormat dateFormat;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        runSaveData();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text_input);
@@ -31,6 +37,11 @@ public class TextInput extends AppCompatActivity {
     }
 
     public void saveData(View view) {
+        runSaveData();
+        finish();
+    }
+
+    private void runSaveData(){
         editText = findViewById(R.id.textField);
         String text;
         try {
@@ -44,9 +55,8 @@ public class TextInput extends AppCompatActivity {
         String time = getTime();
 
         database.addData(date,text,time);
-
-        finish();
     }
+
 
     private String getDate(){
         dateFormat = new SimpleDateFormat("MMMM d");
@@ -57,5 +67,7 @@ public class TextInput extends AppCompatActivity {
         dateFormat = new SimpleDateFormat("h:mm a");
         return dateFormat.format(Calendar.getInstance().getTime());
     }
+
+
 
 }

@@ -43,10 +43,10 @@ public class DefaultFragment extends Fragment implements RecyclerItemTouchHelper
         recyclerView.setAdapter(daysAdapter);
         daysAdapter.update(sqlite.getData());
         daysAdapter.notifyDataSetChanged();
-
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
         return view;
+
     }
 
 
@@ -83,4 +83,5 @@ public class DefaultFragment extends Fragment implements RecyclerItemTouchHelper
             snackbar.show();
         }
     }
+
 }

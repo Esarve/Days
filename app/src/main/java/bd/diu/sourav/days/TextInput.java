@@ -22,7 +22,6 @@ public class TextInput extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        runSaveData();
     }
 
     @Override

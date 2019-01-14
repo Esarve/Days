@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Changes the navigation bar according to API level
     public void openEditor(View view) {
-        intent = new Intent(this, TextInput.class);
+        intent = new Intent(this,TextInput.class);
         this.startActivity(intent);
     }
 

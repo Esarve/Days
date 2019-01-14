@@ -97,6 +97,7 @@ public class Sqlite extends SQLiteOpenHelper {
 
     public void remove(int pos){
         SQLiteDatabase db = this.getWritableDatabase();
+        Log.i("SwipeTest","Recived ID: " + pos);
         db.delete(TABLE, COL_ID + "=" + Integer.toString(pos),null);
         db.close();
     }

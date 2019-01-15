@@ -52,6 +52,8 @@ public class DefaultFragment extends Fragment {
         quickDaysAdapter.addData(sqlite.getData());
         quickDaysAdapter.notifyDataSetChanged();
 
+        // Adding callback methods for swipe listners
+
         OnItemSwipeListener onItemSwipeListener = new OnItemSwipeListener() {
             @Override
             public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
@@ -72,6 +74,7 @@ public class DefaultFragment extends Fragment {
 
             @Override
             public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
+
                 sqlite.remove(itemID);
                 Snackbar snackbar = Snackbar
                         .make(getActivity().findViewById(R.id.coordinator), dltName + " removed!", Snackbar.LENGTH_LONG);

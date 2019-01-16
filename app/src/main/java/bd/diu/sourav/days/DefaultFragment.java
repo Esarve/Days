@@ -1,5 +1,6 @@
 package bd.diu.sourav.days;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,7 +18,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 
 import java.util.ArrayList;
@@ -30,8 +33,9 @@ public class DefaultFragment extends Fragment {
     private QuickDaysAdapter quickDaysAdapter;
     private String dltName;
     private int deletePos;
-    private Days deletedItem;
+    private Days tempItem;
     private int itemID;
+    private Intent intent;
 
 
     @Nullable
@@ -58,7 +62,7 @@ public class DefaultFragment extends Fragment {
             @Override
             public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
                 dltName = days.get(viewHolder.getAdapterPosition()).getDate();
-                deletedItem = days.get(viewHolder.getAdapterPosition());
+                tempItem = days.get(viewHolder.getAdapterPosition());
                 deletePos = viewHolder.getAdapterPosition();
                 itemID = days.get(deletePos).getId();
 
@@ -82,8 +86,8 @@ public class DefaultFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         // undo is selected, restore the deleted item
-                        sqlite.addData(deletedItem.getDate(),deletedItem.getText(),deletedItem.getTime());
-                        quickDaysAdapter.addData(deletePos, deletedItem);
+                        sqlite.addData(tempItem.getDate(), tempItem.getText(), tempItem.getTime());
+                        quickDaysAdapter.addData(deletePos, tempItem);
                     }
                 });
                 snackbar.setActionTextColor(Color.YELLOW);
@@ -91,9 +95,8 @@ public class DefaultFragment extends Fragment {
             }
 
             @Override
-            public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
+            public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {}
 
-            }
         };
 
         ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(quickDaysAdapter);
@@ -102,6 +105,18 @@ public class DefaultFragment extends Fragment {
 
         quickDaysAdapter.enableSwipeItem();
         quickDaysAdapter.setOnItemSwipeListener(onItemSwipeListener);
+
+        recyclerView.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Log.i("Click","Clicked on "+position);
+                intent = new Intent(getActivity(),Reader.class);
+                intent.putExtra("text", days.get(position).getText());
+                intent.putExtra("date",days.get(position).getDate());
+                intent.putExtra("time",days.get(position).getTime());
+                startActivity(intent);
+            }
+        });
         return view;
 
     }

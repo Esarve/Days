@@ -95,12 +95,14 @@ public class Sqlite extends SQLiteOpenHelper {
         return resultlist;
     }
 
-    public void remove(int pos){
+    protected void remove(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        Log.i("SwipeTest","Recived ID: " + pos);
-        db.delete(TABLE, COL_ID + "=" + Integer.toString(pos),null);
+        Log.i("SwipeTest","Recived ID: " + id);
+        db.delete(TABLE, COL_ID + "=" + Integer.toString(id),null);
         db.close();
     }
+
+
 
 
     // For logging and shits

@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class TextInput extends AppCompatActivity {
-    Sqlite database = new Sqlite(this);
+    Sqlite database;
     EditText editText;
     TextView textView;
     DateFormat dateFormat;
@@ -32,6 +32,7 @@ public class TextInput extends AppCompatActivity {
         }
         textView = findViewById(R.id.date_view);
         textView.setText(getDate());
+        database = new Sqlite(getApplicationContext());
     }
 
     public void saveData(View view) {

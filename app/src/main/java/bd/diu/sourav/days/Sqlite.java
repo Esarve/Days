@@ -1,11 +1,12 @@
 package bd.diu.sourav.days;
 
-import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,39 +24,34 @@ public class Sqlite extends SQLiteOpenHelper {
     private static final String COL_TIME = "time";
     private static final String COL_TEXT = "text";
     private static final String COL_ID = "id";
+    private static final String PASS = "abc123";
+
+
+
     // Constructor. u already know that.
 
-    public Sqlite(Context context){
+    public Sqlite(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        initDB(db);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        SQLiteDatabase.loadLibs(context);
     }
 
     // Creates the table
 
-    private void initDB(SQLiteDatabase db){
-        String createTable = "CREATE TABLE IF NOT EXISTS " +  TABLE + "(" +
-                COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                COL_DATE + " VARCHAR,"+
-                COL_TEXT + " TEXT,"+
-                COL_TIME + " VARCHAR"+
+    private void initDB(SQLiteDatabase db) {
+        String createTable = "CREATE TABLE IF NOT EXISTS " + TABLE + "(" +
+                COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL_DATE + " VARCHAR," +
+                COL_TEXT + " TEXT," +
+                COL_TIME + " VARCHAR" +
                 ")";
         db.execSQL(createTable);
         setLog("Database Created");
     }
 
-    // Method for adding data to the database. Havent tested yet  ¯\_(ツ)_/¯
+    // Method for adding data to the database. Haven't tested yet  ¯\_(ツ)_/¯
 
-    protected void addData(String date, String text, String time){
-        SQLiteDatabase db = this.getWritableDatabase();
+    protected void addData(String date, String text, String time) {
+        SQLiteDatabase db = this.getWritableDatabase(PASS);
         ContentValues values = new ContentValues();
         setLog("Ready to add values");
         values.put(COL_DATE, date);
@@ -69,49 +65,56 @@ public class Sqlite extends SQLiteOpenHelper {
 
     // Fetches data. Should work. Kanged from my other project
 
-    public List<Days> getData(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " +TABLE+ ";";
+    public List<Days> getData() {
+
+        SQLiteDatabase db = this.getWritableDatabase(PASS);
+        String query = "SELECT * FROM " + TABLE + ";";
 
         List<Days> resultlist = new ArrayList<>();
-        Cursor cursor = db.rawQuery(query,null);
+        Cursor cursor = db.rawQuery(query, null);
 
         int dateIndex = cursor.getColumnIndex(COL_DATE);
         int textIndex = cursor.getColumnIndex(COL_TEXT);
         int timeIndex = cursor.getColumnIndex(COL_TIME);
         int idIndex = cursor.getColumnIndex(COL_ID);
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
-                Days newContacts = new Days(cursor.getString(dateIndex),cursor.getString(textIndex),cursor.getString(timeIndex),cursor.getInt(idIndex));
+                Days newContacts = new Days(cursor.getString(dateIndex), cursor.getString(textIndex), cursor.getString(timeIndex), cursor.getInt(idIndex));
                 resultlist.add(newContacts);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
             setLog("Finised may be?");
         }
-
+        cursor.close();
         db.close();
         setLog(Integer.toString(resultlist.size()));
         setLog("Result delivered");
         return resultlist;
     }
 
-    protected void remove(int id){
-        SQLiteDatabase db = this.getWritableDatabase();
-        Log.i("SwipeTest","Recived ID: " + id);
-        db.delete(TABLE, COL_ID + "=" + Integer.toString(id),null);
+    protected void remove(int id) {
+        SQLiteDatabase db = this.getWritableDatabase(PASS);
+        Log.i("SwipeTest", "Recived ID: " + id);
+        db.delete(TABLE, COL_ID + "=" + Integer.toString(id), null);
         db.close();
     }
 
 
-
-
     // For logging and shits
 
-    private void setLog(String message){
-        Log.i("Database",message);
+    private void setLog(String message) {
+        Log.i("Database", message);
     }
 
 
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        initDB(db);
+    }
 
-
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE);
+        initDB(db);
+    }
 }

@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultFragment extends Fragment {
-    private Sqlite sqlite;
     private List<Days> days = new ArrayList<>();
     private RecyclerView recyclerView;
     private QuickDaysAdapter quickDaysAdapter;
@@ -41,7 +40,6 @@ public class DefaultFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        sqlite = new Sqlite(getActivity());
         View view = inflater.inflate(R.layout.fragment_default,container,false);
 
         // setting up recyclerview and SHITS
@@ -53,7 +51,7 @@ public class DefaultFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(quickDaysAdapter);
-        quickDaysAdapter.addData(sqlite.getData());
+        quickDaysAdapter.addData(Sqlite.getInstance(getActivity()).getData());
         quickDaysAdapter.notifyDataSetChanged();
 
         // Adding callback methods for swipe listners
@@ -79,14 +77,14 @@ public class DefaultFragment extends Fragment {
             @Override
             public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
 
-                sqlite.remove(itemID);
+                Sqlite.getInstance(getActivity()).remove(itemID);
                 Snackbar snackbar = Snackbar
                         .make(getActivity().findViewById(R.id.coordinator), dltName + " removed!", Snackbar.LENGTH_LONG);
                 snackbar.setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         // undo is selected, restore the deleted item
-                        sqlite.addData(tempItem.getDate(), tempItem.getText(), tempItem.getTime());
+                        Sqlite.getInstance(getActivity()).addData(tempItem.getDate(), tempItem.getText(), tempItem.getTime());
                         quickDaysAdapter.addData(deletePos, tempItem);
                     }
                 });

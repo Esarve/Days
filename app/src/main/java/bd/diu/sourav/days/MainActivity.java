@@ -10,10 +10,14 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         loadDefaultFragment();
         BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
         bottomNav.setOnNavigationItemSelectedListener(navlistner);
+        SQLiteDatabase.loadLibs(getApplicationContext());
 
     }
 
@@ -90,4 +95,10 @@ public class MainActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Sqlite.getInstance(getApplicationContext()).db.close();
+        Log.i("Database","Closed");
+    }
 }

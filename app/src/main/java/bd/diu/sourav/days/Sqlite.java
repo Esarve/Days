@@ -11,6 +11,8 @@ import net.sqlcipher.database.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.loader.content.CursorLoader;
+
 /**
  * This is a class for handling all Database related shits
  */
@@ -25,16 +27,23 @@ public class Sqlite extends SQLiteOpenHelper {
     private static final String COL_TEXT = "text";
     private static final String COL_ID = "id";
     private static final String PASS = "abc123";
-
-
+    private static Sqlite instance;
+    public SQLiteDatabase db;
 
     // Constructor. u already know that.
 
     public Sqlite(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        SQLiteDatabase.loadLibs(context);
     }
 
+    static public synchronized Sqlite getInstance(Context context){
+        Log.i("DB", "This shit ran");
+        if (instance == null){
+            context = context.getApplicationContext();
+            instance = new Sqlite(context);
+        }
+        return instance;
+    }
     // Creates the table
 
     private void initDB(SQLiteDatabase db) {
@@ -45,21 +54,24 @@ public class Sqlite extends SQLiteOpenHelper {
                 COL_TIME + " VARCHAR" +
                 ")";
         db.execSQL(createTable);
-        setLog("Database Created");
+        setLog("Database Created!");
     }
 
     // Method for adding data to the database. Haven't tested yet  ¯\_(ツ)_/¯
 
     protected void addData(String date, String text, String time) {
-        SQLiteDatabase db = this.getWritableDatabase(PASS);
+        if (db==null){
+            db = instance.getWritableDatabase(PASS);
+            setLog("Created");
+        }
         ContentValues values = new ContentValues();
         setLog("Ready to add values");
         values.put(COL_DATE, date);
         values.put(COL_TEXT, text);
         values.put(COL_TIME, time);
         db.insert(TABLE, null, values);
-        db.close();
-        setLog("values Added and shit closed");
+
+        setLog("Data added");
 
     }
 
@@ -67,7 +79,10 @@ public class Sqlite extends SQLiteOpenHelper {
 
     public List<Days> getData() {
 
-        SQLiteDatabase db = this.getWritableDatabase(PASS);
+        if (db==null){
+            db = instance.getWritableDatabase(PASS);
+            setLog("Created");
+        }
         String query = "SELECT * FROM " + TABLE + ";";
 
         List<Days> resultlist = new ArrayList<>();
@@ -83,22 +98,17 @@ public class Sqlite extends SQLiteOpenHelper {
                 Days newContacts = new Days(cursor.getString(dateIndex), cursor.getString(textIndex), cursor.getString(timeIndex), cursor.getInt(idIndex));
                 resultlist.add(newContacts);
             } while (cursor.moveToNext());
-            setLog("Finised may be?");
         }
         cursor.close();
-        db.close();
         setLog(Integer.toString(resultlist.size()));
         setLog("Result delivered");
         return resultlist;
     }
 
     protected void remove(int id) {
-        SQLiteDatabase db = this.getWritableDatabase(PASS);
         Log.i("SwipeTest", "Recived ID: " + id);
         db.delete(TABLE, COL_ID + "=" + Integer.toString(id), null);
-        db.close();
     }
-
 
     // For logging and shits
 

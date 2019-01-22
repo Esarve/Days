@@ -11,12 +11,10 @@ import net.sqlcipher.database.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.loader.content.CursorLoader;
-
 /**
  * This is a class for handling all Database related shits
  */
-public class Sqlite extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     // General Shits about the database and Table
     private static final int DB_VERSION = 1;
@@ -27,22 +25,33 @@ public class Sqlite extends SQLiteOpenHelper {
     private static final String COL_TEXT = "text";
     private static final String COL_ID = "id";
     private static final String PASS = "abc123";
-    private static Sqlite instance;
-    public SQLiteDatabase db;
+    private static DatabaseHelper instance;
+    SQLiteDatabase db;
 
     // Constructor. u already know that.
 
-    public Sqlite(Context context) {
+    private DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-    static public synchronized Sqlite getInstance(Context context){
+    static synchronized DatabaseHelper getInstance(Context context){
         Log.i("DB", "This shit ran");
         if (instance == null){
             context = context.getApplicationContext();
-            instance = new Sqlite(context);
+            instance = new DatabaseHelper(context);
         }
         return instance;
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        initDB(db);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE);
+        initDB(db);
     }
     // Creates the table
 
@@ -59,11 +68,7 @@ public class Sqlite extends SQLiteOpenHelper {
 
     // Method for adding data to the database. Haven't tested yet  ¯\_(ツ)_/¯
 
-    protected void addData(String date, String text, String time) {
-        if (db==null){
-            db = instance.getWritableDatabase(PASS);
-            setLog("Created");
-        }
+    void addData(String date, String text, String time) {
         ContentValues values = new ContentValues();
         setLog("Ready to add values");
         values.put(COL_DATE, date);
@@ -72,12 +77,11 @@ public class Sqlite extends SQLiteOpenHelper {
         db.insert(TABLE, null, values);
 
         setLog("Data added");
-
     }
 
     // Fetches data. Should work. Kanged from my other project
 
-    public List<Days> getData() {
+    List<Days> getData() {
 
         if (db==null){
             db = instance.getWritableDatabase(PASS);
@@ -95,7 +99,10 @@ public class Sqlite extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                Days newContacts = new Days(cursor.getString(dateIndex), cursor.getString(textIndex), cursor.getString(timeIndex), cursor.getInt(idIndex));
+                Days newContacts = new Days(cursor.getString(dateIndex),
+                        cursor.getString(textIndex),
+                        cursor.getString(timeIndex),
+                        cursor.getInt(idIndex));
                 resultlist.add(newContacts);
             } while (cursor.moveToNext());
         }
@@ -105,26 +112,25 @@ public class Sqlite extends SQLiteOpenHelper {
         return resultlist;
     }
 
-    protected void remove(int id) {
+    void remove(int id) {
         Log.i("SwipeTest", "Recived ID: " + id);
         db.delete(TABLE, COL_ID + "=" + Integer.toString(id), null);
     }
 
+    // For updating Data
+    void updateData(String date, String text, String time, String id) {
+        ContentValues values = new ContentValues();
+        setLog("Ready to add values");
+        values.put(COL_DATE, date);
+        values.put(COL_TEXT, text);
+        values.put(COL_TIME, time);
+        db.update(TABLE, values,COL_ID + "=" + id,null);
+        setLog("Data Updated");
+    }
     // For logging and shits
 
     private void setLog(String message) {
         Log.i("Database", message);
     }
 
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        initDB(db);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+TABLE);
-        initDB(db);
-    }
 }

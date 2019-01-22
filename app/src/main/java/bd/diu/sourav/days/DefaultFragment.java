@@ -49,9 +49,8 @@ public class DefaultFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(quickDaysAdapter);
-        quickDaysAdapter.addData(Sqlite.getInstance(getActivity()).getData());
+        quickDaysAdapter.addData(DatabaseHelper.getInstance(getActivity()).getData());
         quickDaysAdapter.notifyDataSetChanged();
 
         // Adding callback methods for swipe listners
@@ -77,14 +76,14 @@ public class DefaultFragment extends Fragment {
             @Override
             public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
 
-                Sqlite.getInstance(getActivity()).remove(itemID);
+                DatabaseHelper.getInstance(getActivity()).remove(itemID);
                 Snackbar snackbar = Snackbar
                         .make(getActivity().findViewById(R.id.coordinator), dltName + " removed!", Snackbar.LENGTH_LONG);
                 snackbar.setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         // undo is selected, restore the deleted item
-                        Sqlite.getInstance(getActivity()).addData(tempItem.getDate(), tempItem.getText(), tempItem.getTime());
+                        DatabaseHelper.getInstance(getActivity()).addData(tempItem.getDate(), tempItem.getText(), tempItem.getTime());
                         quickDaysAdapter.addData(deletePos, tempItem);
                     }
                 });
@@ -112,6 +111,8 @@ public class DefaultFragment extends Fragment {
                 intent.putExtra("text", days.get(position).getText());
                 intent.putExtra("date",days.get(position).getDate());
                 intent.putExtra("time",days.get(position).getTime());
+                intent.putExtra("id",days.get(position).getId());
+                intent.putExtra("task","add");
                 startActivity(intent);
             }
         });

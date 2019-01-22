@@ -34,12 +34,13 @@
             android:padding="10dp"
             android:gravity="center|start">
 
-            <ImageButton
+            <Button
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:background="@color/colorAccent"
-                android:src="@drawable/ic_mode_edit_black_24dp"
-                android:textSize="20sp" />
+                android:text="@string/save"
+                android:textSize="16sp"
+                android:onClick="openEditor"/>
         </LinearLayout>
 
         <LinearLayout

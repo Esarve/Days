@@ -3,25 +3,28 @@ package bd.diu.sourav.days;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import net.sqlcipher.database.SQLiteDatabase;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    TextView title;
     Intent intent;
     private BottomNavigationView.OnNavigationItemSelectedListener navlistner =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -58,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navlistner);
         SQLiteDatabase.loadLibs(getApplicationContext());
 
+        title = findViewById(R.id.title);
+        title.setText("Days");
+
     }
 
     @Override
@@ -91,14 +97,14 @@ public class MainActivity extends AppCompatActivity {
 
     // Changes the navigation bar according to API level
     public void openEditor(View view) {
-        intent = new Intent(this,TextInput.class);
+        intent = new Intent(this, Editor.class);
         this.startActivity(intent);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Sqlite.getInstance(getApplicationContext()).db.close();
-        Log.i("Database","Closed");
+        DatabaseHelper.getInstance(getApplicationContext()).db.close();
+        Log.i("Database", "Closed");
     }
 }

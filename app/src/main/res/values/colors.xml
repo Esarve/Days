@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#7986cb</color>
-    <color name="colorPrimaryDark">#49599a</color>
-    <color name="colorAccent">#9fa8da</color>
-    <color name="NavColor">#EEEEEE</color>
+    <color name="colorPrimary">#c7c7c7</color>
+    <color name="colorPrimaryDark">#fafafa</color>
+    <color name="colorAccent">#00838f</color>
+    <color name="NavColor">#fafafa</color>
     <color name="year">#999999</color>
     <color name="title">#222222</color>
     <color name="default_dark">#111111</color>
     <color name="ItemBG">#F5F5F5</color>
+    <color name="textPrimary">#000000</color>
+    <color name="cardBG">#fafafa</color>
+    <color name="textTitle">#111111</color>
 </resources>

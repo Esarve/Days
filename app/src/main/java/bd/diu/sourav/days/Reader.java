@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,7 +14,7 @@ public class Reader extends AppCompatActivity {
     String text;
     String date;
     String time;
-    String id;
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,9 @@ public class Reader extends AppCompatActivity {
         text = Objects.requireNonNull(getIntent().getExtras()).getString("text");
         date = Objects.requireNonNull(getIntent().getExtras()).getString("date");
         time = Objects.requireNonNull(getIntent().getExtras()).getString("time");
-        id = Objects.requireNonNull(getIntent().getExtras()).getString("id");
+        id = Objects.requireNonNull(getIntent().getIntExtra("id",9999999));
+
+        Log.i("Database",String.format("Recieved in Reader Date: %s Text: %s Time: %s ID: %s",date,text,time,id));
 
         viewText.setText(text);
         viewDate.setText(date);

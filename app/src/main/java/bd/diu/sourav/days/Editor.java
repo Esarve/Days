@@ -25,7 +25,7 @@ public class Editor extends AppCompatActivity {
     String text;
     String date;
     String time;
-    String id;
+    int id;
 
     @Override
     protected void onDestroy() {
@@ -93,7 +93,9 @@ public class Editor extends AppCompatActivity {
         text = Objects.requireNonNull(getIntent().getExtras()).getString("text");
         date = Objects.requireNonNull(getIntent().getExtras()).getString("date");
         time = Objects.requireNonNull(getIntent().getExtras()).getString("time");
-        id = Objects.requireNonNull(getIntent().getExtras()).getString("id");
+        id = Objects.requireNonNull(getIntent().getIntExtra("id",9999999));
+
+        Log.i("Database",String.format("Recieved in Editor Date: %s Text: %s Time: %s ID: %s",date,text,time,id));
 
         editText.setText(text);
         dateView.setText(date);

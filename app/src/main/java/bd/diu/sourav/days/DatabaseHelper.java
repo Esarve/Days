@@ -83,15 +83,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     List<Days> getData() {
 
-        if (db==null){
-            db = instance.getWritableDatabase(PASS);
-            setLog("Created");
-        }
+        db = instance.getWritableDatabase(PASS);
+        setLog("Created");
+        setLog("password: "+PASS);
         String query = "SELECT * FROM " + TABLE + ";";
 
         List<Days> resultlist = new ArrayList<>();
         Cursor cursor = db.rawQuery(query, null);
-
         int dateIndex = cursor.getColumnIndex(COL_DATE);
         int textIndex = cursor.getColumnIndex(COL_TEXT);
         int timeIndex = cursor.getColumnIndex(COL_TIME);
@@ -118,9 +116,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // For updating Data
-    void updateData(String date, String text, String time, String id) {
+    void updateData(String date, String text, String time, int id) {
         ContentValues values = new ContentValues();
         setLog("Ready to add values");
+        setLog(String.format("Recieved Date: %s Text: %s Time: %s ID: %s",date,text,time,id));
         values.put(COL_DATE, date);
         values.put(COL_TEXT, text);
         values.put(COL_TIME, time);

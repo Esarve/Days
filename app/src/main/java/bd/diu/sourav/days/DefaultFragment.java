@@ -109,13 +109,15 @@ public class DefaultFragment extends Fragment {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Log.i("Click","Clicked on "+position);
+                int id = days.get(position).getId();
                 intent = new Intent(getActivity(),Reader.class);
                 intent.putExtra("text", days.get(position).getText());
                 intent.putExtra("date",days.get(position).getDate());
                 intent.putExtra("time",days.get(position).getTime());
-                intent.putExtra("id",days.get(position).getId());
+                intent.putExtra("id",id);
                 intent.putExtra("task","add");
                 startActivity(intent);
+                Log.i("Database","Recived id: "+days.get(position).getId());
             }
         });
         return view;

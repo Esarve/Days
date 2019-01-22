@@ -11,4 +11,6 @@
     <color name="textPrimary">#000000</color>
     <color name="cardBG">#fafafa</color>
     <color name="textTitle">#111111</color>
+    <color name="error">#e53935</color>
+    <color name="success">#00c853</color>
 </resources>

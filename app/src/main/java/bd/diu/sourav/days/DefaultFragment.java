@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -86,7 +88,8 @@ public class DefaultFragment extends Fragment {
                         quickDaysAdapter.addData(deletePos, tempItem);
                     }
                 });
-                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.setActionTextColor(Color.WHITE);
+                snackbar.getView().setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.error,null));
                 snackbar.show();
             }
 

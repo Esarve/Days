@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
@@ -41,9 +42,7 @@ public class DefaultFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_default,container,false);
-
         // setting up recyclerview and SHITS
-
         recyclerView = view.findViewById(R.id.recycler_view);
         quickDaysAdapter = new QuickDaysAdapter(days);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());

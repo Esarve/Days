@@ -83,7 +83,11 @@ public class Sqlite extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()){
             do {
-                Days newContacts = new Days(cursor.getString(dateIndex),cursor.getString(textIndex),cursor.getString(timeIndex),cursor.getInt(idIndex));
+                Days newContacts = new Days(
+                        cursor.getString(dateIndex),
+                        cursor.getString(textIndex),
+                        cursor.getString(timeIndex),
+                        cursor.getInt(idIndex));
                 resultlist.add(newContacts);
             }while (cursor.moveToNext());
             setLog("Finised may be?");

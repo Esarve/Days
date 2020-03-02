@@ -1,19 +1,21 @@
-package bd.diu.sourav.days;
+package bd.diu.sourav.days.Activities;
 
 import android.os.Build;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class TextInput extends AppCompatActivity {
+import bd.diu.sourav.days.R;
+import bd.diu.sourav.days.Sqlite;
+
+public class TextInputActivity extends AppCompatActivity {
     Sqlite database = new Sqlite(this);
     EditText editText;
     TextView textView;

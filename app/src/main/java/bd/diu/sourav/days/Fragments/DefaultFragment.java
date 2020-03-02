@@ -1,30 +1,38 @@
-package bd.diu.sourav.days;
+package bd.diu.sourav.days.Fragments;
 
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import bd.diu.sourav.days.Activities.ReaderActivity;
+import bd.diu.sourav.days.Days;
+import bd.diu.sourav.days.QuickDaysAdapter;
+import bd.diu.sourav.days.R;
+import bd.diu.sourav.days.Sqlite;
 
 public class DefaultFragment extends Fragment {
     private Sqlite sqlite;
@@ -44,15 +52,8 @@ public class DefaultFragment extends Fragment {
         sqlite = new Sqlite(getActivity());
         View view = inflater.inflate(R.layout.fragment_default,container,false);
 
-        // setting up recyclerview and SHITS
-
-        recyclerView = view.findViewById(R.id.recycler_view);
-        quickDaysAdapter = new QuickDaysAdapter(days);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(quickDaysAdapter);
+        // setting up recyclerview and stuffs
+        initRecyclerView(view);
         quickDaysAdapter.addData(sqlite.getData());
         quickDaysAdapter.notifyDataSetChanged();
 
@@ -81,7 +82,8 @@ public class DefaultFragment extends Fragment {
 
                 sqlite.remove(itemID);
                 Snackbar snackbar = Snackbar
-                        .make(getActivity().findViewById(R.id.coordinator), dltName + " removed!", Snackbar.LENGTH_LONG);
+                        .make(Objects.requireNonNull(getActivity()).
+                                findViewById(R.id.coordinator), dltName + " removed!", Snackbar.LENGTH_LONG);
                 snackbar.setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -110,7 +112,7 @@ public class DefaultFragment extends Fragment {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Log.i("Click","Clicked on "+position);
-                intent = new Intent(getActivity(),Reader.class);
+                intent = new Intent(getActivity(), ReaderActivity.class);
                 intent.putExtra("text", days.get(position).getText());
                 intent.putExtra("date",days.get(position).getDate());
                 intent.putExtra("time",days.get(position).getTime());
@@ -119,6 +121,18 @@ public class DefaultFragment extends Fragment {
         });
         return view;
 
+    }
+
+    private void initRecyclerView(View view) {
+        recyclerView = view.findViewById(R.id.recycler_view);
+        quickDaysAdapter = new QuickDaysAdapter(days);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(
+                Objects.requireNonNull(getActivity()),
+                DividerItemDecoration.VERTICAL));
+        recyclerView.setAdapter(quickDaysAdapter);
     }
 
 }

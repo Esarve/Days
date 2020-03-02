@@ -1,13 +1,16 @@
-package bd.diu.sourav.days;
+package bd.diu.sourav.days.Activities;
 
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Objects;
 
-public class Reader extends AppCompatActivity {
+import bd.diu.sourav.days.R;
+
+public class ReaderActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

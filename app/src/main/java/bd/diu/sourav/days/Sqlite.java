@@ -1,10 +1,10 @@
 package bd.diu.sourav.days;
 
-import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class Sqlite extends SQLiteOpenHelper {
 
     // Method for adding data to the database. Havent tested yet  ¯\_(ツ)_/¯
 
-    protected void addData(String date, String text, String time){
+    public void addData(String date, String text, String time) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         setLog("Ready to add values");
@@ -99,7 +99,7 @@ public class Sqlite extends SQLiteOpenHelper {
         return resultlist;
     }
 
-    protected void remove(int id){
+    public void remove(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         Log.i("SwipeTest","Recived ID: " + id);
         db.delete(TABLE, COL_ID + "=" + Integer.toString(id),null);

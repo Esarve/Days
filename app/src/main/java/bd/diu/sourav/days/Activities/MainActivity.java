@@ -1,24 +1,31 @@
-package bd.diu.sourav.days;
+package bd.diu.sourav.days.Activities;
 
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
+
+import bd.diu.sourav.days.Fragments.AboutFragment;
+import bd.diu.sourav.days.Fragments.DefaultFragment;
+import bd.diu.sourav.days.Fragments.StatsFragment;
+import bd.diu.sourav.days.R;
+import io.realm.Realm;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    Intent intent;
     private BottomNavigationView.OnNavigationItemSelectedListener navlistner =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -45,24 +52,12 @@ public class MainActivity extends AppCompatActivity {
             };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        changeNavBarColor();
-        loadDefaultFragment();
-        BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
-        bottomNav.setOnNavigationItemSelectedListener(navlistner);
-
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         loadDefaultFragment();
         CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
         Snackbar snackbar = Snackbar
                 .make(coordinatorLayout, "Data Loaded Successfully", Snackbar.LENGTH_LONG);
-
         snackbar.show();
     }
 
@@ -71,6 +66,17 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.refresh, menu);
         return true;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Realm.init(this);
+        setContentView(R.layout.activity_main);
+        changeNavBarColor();
+        loadDefaultFragment();
+        BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
+        bottomNav.setOnNavigationItemSelectedListener(navlistner);
     }
 
     private void changeNavBarColor() {
@@ -86,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Changes the navigation bar according to API level
     public void openEditor(View view) {
-        intent = new Intent(this,TextInput.class);
+        Intent intent = new Intent(this, TextInputActivity.class);
         this.startActivity(intent);
     }
 

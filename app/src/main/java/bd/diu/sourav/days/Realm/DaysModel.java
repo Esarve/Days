@@ -13,8 +13,22 @@ public class DaysModel extends RealmObject {
     public int id;
     @Required
     public String body;
-    public String datetime;
+    public String date;
+    public String time;
+    public long datetime;
 
+
+    public static String getPropertyId() {
+        return PROPERTY_ID;
+    }
+
+    public static String getPropertyBody() {
+        return PROPERTY_BODY;
+    }
+
+    public static String getPropertyTimedate() {
+        return PROPERTY_TIMEDATE;
+    }
 
     public int getId() {
         return id;
@@ -32,11 +46,27 @@ public class DaysModel extends RealmObject {
         this.body = body;
     }
 
-    public String getDatetime() {
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public long getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(String datetime) {
+    public void setDatetime(long datetime) {
         this.datetime = datetime;
     }
 }

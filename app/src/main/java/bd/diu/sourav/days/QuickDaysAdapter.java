@@ -6,16 +6,21 @@ import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
 
-public class QuickDaysAdapter extends BaseItemDraggableAdapter <Days, BaseViewHolder> {
-    public QuickDaysAdapter(List<Days> data) {
+import bd.diu.sourav.days.Realm.DaysModel;
+
+public class QuickDaysAdapter extends BaseItemDraggableAdapter<DaysModel, BaseViewHolder> {
+    private DateAndTimeConverter dateAndTimeConverter;
+
+    public QuickDaysAdapter(List<DaysModel> data) {
         super(R.layout.list_layout, data);
+        dateAndTimeConverter = new DateAndTimeConverter();
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Days item) {
-        helper.setText(R.id.date, item.getDate());
-        helper.setText(R.id.text, item.getText());
-        helper.setText(R.id.time,item.getTime());
+    protected void convert(BaseViewHolder helper, DaysModel item) {
+        helper.setText(R.id.date, dateAndTimeConverter.splitDate(item.getDatetime()));
+        helper.setText(R.id.text, item.body);
+        helper.setText(R.id.time, dateAndTimeConverter.splitTime(item.getDatetime()));
     }
 
 }

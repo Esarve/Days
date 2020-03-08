@@ -29,32 +29,33 @@ import java.util.List;
 import java.util.Objects;
 
 import bd.diu.sourav.days.Activities.ReaderActivity;
-import bd.diu.sourav.days.Days;
+import bd.diu.sourav.days.DateAndTimeConverter;
 import bd.diu.sourav.days.QuickDaysAdapter;
 import bd.diu.sourav.days.R;
-import bd.diu.sourav.days.Sqlite;
+import bd.diu.sourav.days.Realm.DaysModel;
+import bd.diu.sourav.days.Realm.RealmRepository;
 
 public class DefaultFragment extends Fragment {
-    private Sqlite sqlite;
-    private List<Days> days = new ArrayList<>();
+    private List<DaysModel> days = new ArrayList<>();
     private RecyclerView recyclerView;
     private QuickDaysAdapter quickDaysAdapter;
     private String dltName;
     private int deletePos;
-    private Days tempItem;
+    private DaysModel tempItem;
     private int itemID;
     private Intent intent;
+    private RealmRepository realmRepository;
+    private DateAndTimeConverter dateAndTimeConverter;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        sqlite = new Sqlite(getActivity());
         View view = inflater.inflate(R.layout.fragment_default,container,false);
-
-        // setting up recyclerview and stuffs
+        dateAndTimeConverter = new DateAndTimeConverter();
         initRecyclerView(view);
-        quickDaysAdapter.addData(sqlite.getData());
+        realmRepository = realmRepository.getInstance();
+        quickDaysAdapter.addData(realmRepository.getAllData());
         quickDaysAdapter.notifyDataSetChanged();
 
         // Adding callback methods for swipe listners
@@ -62,7 +63,7 @@ public class DefaultFragment extends Fragment {
         OnItemSwipeListener onItemSwipeListener = new OnItemSwipeListener() {
             @Override
             public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
-                dltName = days.get(viewHolder.getAdapterPosition()).getDate();
+                dltName = days.get(viewHolder.getAdapterPosition()).getBody();
                 tempItem = days.get(viewHolder.getAdapterPosition());
                 deletePos = viewHolder.getAdapterPosition();
                 itemID = days.get(deletePos).getId();
@@ -70,7 +71,7 @@ public class DefaultFragment extends Fragment {
 
                 Log.i("SwipeTest","About to delete on Pos "+ deletePos);
                 Log.i("SwipeTest", "About to delete ID: " + days.get(viewHolder.getAdapterPosition()).getId());
-                Log.i("SwipeTest", "About to delete ID: " + days.get(deletePos).getId() + days.get(deletePos).getText());
+                Log.i("SwipeTest", "About to delete ID: " + days.get(deletePos).getId() + days.get(deletePos).getBody());
 
             }
 
@@ -80,7 +81,7 @@ public class DefaultFragment extends Fragment {
             @Override
             public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {
 
-                sqlite.remove(itemID);
+                realmRepository.deleteData(itemID);
                 Snackbar snackbar = Snackbar
                         .make(Objects.requireNonNull(getActivity()).
                                 findViewById(R.id.coordinator), dltName + " removed!", Snackbar.LENGTH_LONG);
@@ -88,7 +89,7 @@ public class DefaultFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         // undo is selected, restore the deleted item
-                        sqlite.addData(tempItem.getDate(), tempItem.getText(), tempItem.getTime());
+                        realmRepository.addData(tempItem.getBody(), tempItem.getDatetime(), tempItem.getDate(), tempItem.getTime());
                         quickDaysAdapter.addData(deletePos, tempItem);
                     }
                 });
@@ -113,15 +114,16 @@ public class DefaultFragment extends Fragment {
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Log.i("Click","Clicked on "+position);
                 intent = new Intent(getActivity(), ReaderActivity.class);
-                intent.putExtra("text", days.get(position).getText());
-                intent.putExtra("date",days.get(position).getDate());
-                intent.putExtra("time",days.get(position).getTime());
+                intent.putExtra("text", days.get(position).getBody());
+                intent.putExtra("date", dateAndTimeConverter.splitDate(days.get(position).getDatetime()));
+                intent.putExtra("time", dateAndTimeConverter.splitTime(days.get(position).getDatetime()));
                 startActivity(intent);
             }
         });
         return view;
 
     }
+
 
     private void initRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.recycler_view);

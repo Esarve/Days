@@ -18,9 +18,9 @@ public class QuickDaysAdapter extends BaseItemDraggableAdapter<DaysModel, BaseVi
 
     @Override
     protected void convert(BaseViewHolder helper, DaysModel item) {
-        helper.setText(R.id.date, dateAndTimeConverter.splitDate(item.getDatetime()));
-        helper.setText(R.id.text, item.body);
-        helper.setText(R.id.time, dateAndTimeConverter.splitTime(item.getDatetime()));
+        helper.setText(R.id.date, item.getDate());
+        helper.setText(R.id.text, item.getBody());
+        helper.setText(R.id.time, item.getTime());
     }
 
 }

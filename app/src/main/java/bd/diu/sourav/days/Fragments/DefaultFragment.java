@@ -36,6 +36,7 @@ import bd.diu.sourav.days.Realm.DaysModel;
 import bd.diu.sourav.days.Realm.RealmRepository;
 
 public class DefaultFragment extends Fragment {
+    private static final String TAG = "DefaultFragment";
     private List<DaysModel> days = new ArrayList<>();
     private RecyclerView recyclerView;
     private QuickDaysAdapter quickDaysAdapter;
@@ -54,7 +55,8 @@ public class DefaultFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_default,container,false);
         dateAndTimeConverter = new DateAndTimeConverter();
         initRecyclerView(view);
-        realmRepository = realmRepository.getInstance();
+        realmRepository = new RealmRepository();
+        //days.add(realmRepository.getAllData());
         quickDaysAdapter.addData(realmRepository.getAllData());
         quickDaysAdapter.notifyDataSetChanged();
 
@@ -63,7 +65,6 @@ public class DefaultFragment extends Fragment {
         OnItemSwipeListener onItemSwipeListener = new OnItemSwipeListener() {
             @Override
             public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {
-                dltName = days.get(viewHolder.getAdapterPosition()).getBody();
                 tempItem = days.get(viewHolder.getAdapterPosition());
                 deletePos = viewHolder.getAdapterPosition();
                 itemID = days.get(deletePos).getId();
@@ -89,8 +90,13 @@ public class DefaultFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         // undo is selected, restore the deleted item
-                        realmRepository.addData(tempItem.getBody(), tempItem.getDatetime(), tempItem.getDate(), tempItem.getTime());
-                        quickDaysAdapter.addData(deletePos, tempItem);
+                        if (tempItem != null) {
+                            realmRepository.addData(tempItem);
+                            quickDaysAdapter.addData(deletePos, tempItem);
+                        } else
+                            Log.d(TAG, "onClick: TEMP ITEM NULL");
+
+
                     }
                 });
                 snackbar.setActionTextColor(Color.YELLOW);
@@ -107,7 +113,7 @@ public class DefaultFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         quickDaysAdapter.enableSwipeItem();
-        quickDaysAdapter.setOnItemSwipeListener(onItemSwipeListener);
+        //quickDaysAdapter.setOnItemSwipeListener(onItemSwipeListener);
 
         recyclerView.addOnItemTouchListener(new OnItemClickListener() {
             @Override

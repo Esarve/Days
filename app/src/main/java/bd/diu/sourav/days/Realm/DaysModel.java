@@ -17,6 +17,16 @@ public class DaysModel extends RealmObject {
     public String time;
     public long datetime;
 
+    public DaysModel() {
+    }
+
+    DaysModel(int id, String body, String date, String time, long datetime) {
+        this.id = id;
+        this.body = body;
+        this.date = date;
+        this.time = time;
+        this.datetime = datetime;
+    }
 
     public static String getPropertyId() {
         return PROPERTY_ID;
